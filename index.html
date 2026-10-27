@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>tamigo</title>
+<style>
+:root{--or:#fdb25d;--cor:#f26d4f;--ind:#3f45a8;--lav:#f0f1f9;--line:#e3e5ec;--tx:#2a2c33;--mut:#6b7080;--acc:var(--or);--bad:#d64545;--ok:#2f9e6b;--rowh:46px;--namew:190px}
+*{box-sizing:border-box}
+body{margin:0;padding:6px;height:100vh;background:#fff;font:13px/1.35 Nunito,"Segoe UI",Helvetica,Arial,sans-serif;color:var(--tx)}
+#app{height:100%;border:1.5px solid #fdc08b;border-radius:26px;overflow:hidden;display:flex;flex-direction:column;background:#fff}
+#top{height:70px;flex:none;display:flex;align-items:stretch;border-bottom:1px solid var(--line);background:#fff}
+.logo{width:200px;display:flex;align-items:center;padding-left:36px;font-size:34px;font-weight:600;color:var(--cor);letter-spacing:-1px}
+.bell{width:70px;display:flex;align-items:center;justify-content:center;color:var(--cor);font-size:18px}
+#tn{display:flex;gap:2px;align-items:stretch;padding-left:10px}
+#tn a{width:84px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:#66697a;cursor:pointer;font-size:12.5px;border-bottom:2px solid transparent;margin-top:2px}
+#tn a svg{width:26px;height:26px;stroke:#777b8a;fill:none;stroke-width:1.3}
+#tn a.on{color:var(--cor);border-bottom-color:var(--cor)}#tn a.on svg{stroke:var(--cor)}
+.sp{flex:1}
+.yl{width:152px;background:var(--or);color:#fff;padding:0 18px;display:flex;align-items:center;font-size:13px;opacity:.95;line-height:1.5}
+.org{width:100px;display:flex;align-items:center;justify-content:center}.org i{width:46px;height:46px;border:1.5px solid var(--or);border-radius:50%;display:block}
+#body{flex:1;display:flex;min-height:0}
+aside{width:226px;flex:none;background:#f7f7fb;display:flex;flex-direction:column}
+#prof{background:var(--or);color:#fff;height:146px;padding:20px 22px;flex:none}
+#prof .r{display:flex;gap:12px;align-items:center}#prof .av{width:44px;height:44px;border-radius:50%;background:#8a8f9d;border:2px solid #fff8;display:flex;align-items:center;justify-content:center;font-weight:700}
+#prof b{font-weight:600;font-size:14px;display:block}#prof small{font-size:11px;font-weight:600}
+#prof .ad{margin-top:42px;font-size:14px;display:flex;justify-content:space-between}
+#sub{margin:20px 0 0 18px;border-left:1.5px solid #e4e6ee;padding:0;list-style:none;overflow:auto;flex:1}
+#sub li{padding:0 22px;height:44px;line-height:44px;color:#5b5f6f;font-size:14.5px;cursor:pointer;position:relative}
+#sub li.on:before{content:"";position:absolute;left:-2px;top:0;bottom:0;width:3px;background:var(--cor)}
+#sub li:hover{color:#000}
+#main{flex:1;background:var(--lav);padding:28px 26px;overflow:auto;min-width:0}
+#panel{background:#fff;min-height:100%;border-radius:3px}
+#hdr:not(:empty){padding:14px 26px;border-bottom:1px solid var(--line)}
+#view{padding:18px 26px 40px}
+.tb{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.tb2{display:flex;align-items:center;padding:20px 0 0}
+.rb{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:#f1f2f7;color:#666;cursor:pointer;font-size:16px}
+.rb.pr{background:var(--ind);color:#fff;border-color:var(--ind)}
+.dp input{height:40px;width:158px;border:1px solid var(--line);border-radius:6px;padding:0 10px;font:inherit;font-size:14.5px}
+.ck{display:flex;align-items:center;gap:9px;font-size:14.5px;margin-left:8px}.ck input{width:20px;height:20px;accent-color:var(--ind)}
+.lnk{color:var(--ind);cursor:pointer;font-size:14.5px}
+.pill-b{height:38px;padding:0 17px;border-radius:19px;border:1.5px solid var(--ind);background:#fff;color:var(--ind);font:inherit;font-size:14.5px;cursor:pointer;margin-left:12px}
+.pill-b.f{background:var(--ind);color:#fff}
+.tsw{display:grid;grid-template-columns:1fr 245px;gap:26px;align-items:start}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:9px;margin:8px 0 18px}
+.dt{background:#b6dfb6;color:#fff;text-align:center;padding:13px 0;border-radius:2px;cursor:pointer;font-size:14.5px;line-height:1.4;height:72px}
+.dt.on{background:#7cc47c}.dt.cl{background:#c9cbd3}.dt.cl.on{background:#9a9eae}
+.ts{width:100%;border-collapse:collapse;border:1px solid var(--line);font-size:13px}
+.ts caption{text-align:left;font-size:17px;padding:12px 13px;border:1px solid var(--line);border-bottom:0}
+.ts th,.ts td{border:1px solid var(--line);height:36px;padding:0 9px;font-weight:400;text-align:left;white-space:nowrap}
+.ts th.g{height:44px}.ts td.r,.ts th.r{text-align:right}
+.ts td.pc{position:relative}.ts td i{font-style:normal;font-size:9px;position:absolute;top:3px;right:8px;background:#0000000d;padding:0 4px;border-radius:5px}
+.ts td.w{cursor:pointer;color:#8a8e9c}.ts td.wh{font-weight:400;cursor:pointer;text-align:right}
+.ts .g1{background:#8fd18f;color:#fff}.ts .y1{background:#ffe082}.ts .r1{background:#f87171;color:#fff}
+.ts tr.gr td{background:#f4f5f8;font-weight:600}.ts tr.tot td{border-top:2px solid var(--line);height:38px}
+.side{margin-top:76px}.card{background:#f4f5f9;padding:14px 14px 16px;margin-bottom:18px;text-align:center}
+.card h4{margin:0 0 10px;font-weight:400;font-size:13px}.card textarea{width:100%;height:106px;border:1px solid var(--line);border-radius:6px;resize:none;font:inherit}
+.card input{width:100%;border:0;background:none;text-align:center;font:inherit;font-size:26px}
+/* planner, tables, modal */
+.grid{display:grid;grid-template-columns:var(--namew) repeat(7,minmax(104px,1fr)) 70px;background:#fff;border:1px solid var(--line);min-width:1000px}
+.grid>div{border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.gh{background:#f7f8fa;padding:6px 8px;font-weight:600;position:sticky;top:0;z-index:2}.gh small{display:block;font-weight:400;color:var(--mut)}.gh.today{background:#fff3e0}.gh.sel{box-shadow:inset 0 -3px var(--or)}
+.dep{grid-column:1/-1;background:#eceef4;padding:4px 8px;font-weight:600;font-size:12px}
+.nm{padding:6px 8px;display:flex;flex-direction:column;justify-content:center;min-height:var(--rowh)}.nm small{color:var(--mut)}
+.cell{min-height:var(--rowh);padding:3px;display:flex;flex-direction:column;gap:3px;cursor:cell}.cell:hover{background:#fff8ec}.cell.over{background:#ffe9c4}
+.cell.abs{background:repeating-linear-gradient(45deg,#f1f2f4,#f1f2f4 6px,#fff 6px,#fff 12px)}
+.tot{padding:6px 8px;text-align:right;font-weight:600;display:flex;align-items:center;justify-content:flex-end}.tot.warn{color:var(--bad)}
+.sh{border-radius:3px;padding:3px 6px;color:#fff;font-size:12px;cursor:grab;border-left:4px solid #0003}.sh small{display:block;opacity:.9;font-size:11px}
+.sh.conf{outline:2px solid var(--bad);background-image:repeating-linear-gradient(135deg,#0000 0 5px,#ff000030 5px 10px)}.sh.draft{opacity:.8}
+.foot{background:#f7f8fa;padding:5px 8px;font-size:12px;color:var(--mut)}
+.pill{display:inline-block;padding:1px 8px;border-radius:9px;font-size:11px;background:#e5e7eb}.pill.pub{background:#d6f0e3;color:#1d6b49}.pill.pen{background:#fdf0c4;color:#8a6500}.pill.no{background:#f8d9d9;color:#a02f2f}
+.btn{border:1px solid var(--ind);background:#fff;color:var(--ind);padding:6px 14px;border-radius:18px;cursor:pointer;font:inherit}.btn.p{background:var(--ind);color:#fff}.btn.d{color:var(--bad);border-color:var(--bad)}
+input,select{font:inherit;border:1px solid var(--line);border-radius:5px;padding:6px 8px;background:#fff}
+table:not(.ts){width:100%;border-collapse:collapse;border:1px solid var(--line)}
+table:not(.ts) th{background:#f7f8fa;text-align:left;font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line)}table:not(.ts) td{padding:7px 10px;border-bottom:1px solid var(--line)}
+.mb{position:fixed;inset:0;background:#0006;display:flex;align-items:flex-start;justify-content:center;padding-top:80px;z-index:20}
+.md{background:#fff;width:380px;border-radius:6px;box-shadow:0 8px 30px #0004}.md h3{margin:0;padding:12px 16px;border-bottom:1px solid var(--line);font-size:15px}
+.md .bd{padding:14px 16px;display:grid;grid-template-columns:110px 1fr;gap:9px;align-items:center}.md .ft{padding:10px 16px;border-top:1px solid var(--line);display:flex;gap:8px}
+.err{grid-column:1/-1;color:var(--bad)}.stub{color:var(--mut);padding:30px 0}
+#toast{position:fixed;bottom:22px;right:22px;background:#2a2c33;color:#fff;padding:9px 14px;border-radius:4px;display:none;z-index:30}
+@media print{#top,aside,#hdr{display:none}body{padding:0}#app{border:0}}
+
+html{-webkit-text-size-adjust:100%}
+.xs{overflow-x:auto}
+@media (max-width:820px){
+ body{padding:0;height:100vh;height:100dvh}
+ #app{border:0;border-radius:0}
+ #top{height:58px}.bell,.yl,.org,#top>.sp{display:none}
+ .logo{width:auto;padding:0 12px;font-size:24px}
+ #tn{flex:1;overflow-x:auto;padding-left:0;gap:0;scrollbar-width:none}#tn::-webkit-scrollbar{display:none}
+ #tn a{flex:none;width:74px;font-size:11px;gap:3px;margin-top:0}#tn a svg{width:22px;height:22px}#tn a[style]{margin-left:0!important}
+ #body{flex-direction:column}
+ aside{width:100%;flex:none}
+ #prof{height:auto;padding:8px 14px}#prof .ad{display:none}#prof .av{width:30px;height:30px;font-size:13px}#prof small{display:none}
+ #sub{display:flex;flex-direction:row;overflow-x:auto;margin:0;border-left:0;border-bottom:1px solid var(--line);flex:none;scrollbar-width:none}
+ #sub::-webkit-scrollbar{display:none}
+ #sub li{flex:none;height:40px;line-height:40px;padding:0 14px;font-size:13.5px;white-space:nowrap}
+ #sub li.on:before{left:0;right:0;top:auto;bottom:0;width:auto;height:3px}
+ #main{padding:8px}#panel{overflow-x:hidden}
+ #hdr:not(:empty){padding:10px 12px}#view{padding:12px;overflow-x:auto}
+ .tb{gap:8px}.ck{margin-left:0;font-size:13.5px}.ck input{width:18px;height:18px}
+ .dp input{width:140px;height:38px}
+ .tb2{flex-wrap:wrap;gap:8px}.pill-b{margin-left:0;height:36px;padding:0 13px;font-size:13.5px}
+ .tsw{grid-template-columns:1fr;gap:14px}.side{margin-top:0}
+ .days{grid-template-columns:repeat(7,86px);overflow-x:auto;margin-bottom:12px}.dt{height:60px;padding:9px 0;font-size:13px}
+ .ts{min-width:640px}
+ .grid{min-width:880px;--namew:120px}
+ .md{width:92vw}.mb{padding-top:24px}.md .bd{grid-template-columns:88px 1fr}
+ input,select,textarea{font-size:16px}
+ .btn{padding:7px 12px}
+}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}.stats .card{margin:0;padding:18px 12px}.stats .card b{display:block;font-size:30px;font-weight:400;margin-top:6px}
+.nw{border-bottom:1px solid var(--line);padding:12px 0}.nw small{color:var(--mut);margin-left:8px}.nw p{margin:6px 0 0}.fm{display:flex;flex-direction:column;gap:8px;max-width:520px;margin-top:20px}.fm textarea{height:70px;border:1px solid var(--line);border-radius:5px;font:inherit;padding:6px 8px}
+h3.sec{margin:26px 0 10px;font-weight:600;font-size:15px}.sw{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:8px}
+@media (max-width:820px){.stats{grid-template-columns:1fr 1fr}}
+</style></head><body>
+<div id="app"><div id="top"><div class="logo">tamigo</div><div class="bell">🔔︎</div><div id="tn"></div><div class="sp"></div><div class="yl">your logo?<br>contact tamigo</div><div class="org"><i></i></div></div>
+<div id="body"><aside><div id="prof"><div class="r"><div class="av">S</div><div><b>Sarah Smith</b><small>⚲ København</small></div></div><div class="ad"><span>Administrator ▾</span><span>⇥</span></div></div><ul id="sub"></ul></aside>
+<div id="main"><div id="panel"><div id="hdr"></div><div id="view"></div></div></div></div></div>
+<div id="toast"></div><div id="modal"></div>
+<script>
+
+const $=s=>document.querySelector(s);
+const pad=n=>String(n).padStart(2,'0');
+const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parse=s=>{const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c)};
+const addD=(s,n)=>{const d=parse(s);d.setDate(d.getDate()+n);return iso(d)};
+const monday=d=>{const x=new Date(d);x.setDate(x.getDate()-((x.getDay()+6)%7));return iso(x)};
+const mins=t=>{const[h,m]=t.split(':').map(Number);return h*60+m};
+const dur=s=>Math.max(0,(mins(s.e)-mins(s.s)-(+s.brk||0))/60);
+const fmt=h=>(Math.round(h*10)/10).toString().replace('.',',');
+const DN=['Man','Tir','Ons','Tor','Fre','Lør','Søn'];
+const DEPS={Butik:'#3b82c4',Lager:'#8a6bbf',Kasse:'#2f9e6b'};
+const uid=()=>Math.random().toString(36).slice(2,9);
+
+function seed(){
+ const emps=[['Anna Jensen','Butik',37],['Mads Holm','Butik',30],['Sofie Berg','Kasse',37],['Jonas Kruse','Kasse',20],['Emil Dahl','Lager',37],['Laura Nygaard','Lager',25],['Peter Lund','Butik',15]]
+  .map(([name,dep,contract],i)=>({id:'e'+i,name,dep,contract,email:name.split(' ')[0].toLowerCase()+'@firma.dk',active:true}));
+ const w=monday(new Date()),shifts=[];
+ emps.forEach((e,i)=>{for(let d=0;d<5;d++){if((d+i)%4===3)continue;const early=(d+i)%2===0;
+  shifts.push({id:uid(),emp:e.id,date:addD(w,d),s:early?'08:00':'12:00',e:early?'16:00':'20:00',brk:30,dep:e.dep})}});
+ shifts.push({id:uid(),emp:null,date:addD(w,5),s:'10:00',e:'18:00',brk:30,dep:'Butik'});
+ return{emps,shifts,abs:[{id:uid(),emp:'e1',from:addD(w,2),to:addD(w,3),type:'Ferie',status:'Afventer'}],
+  pub:{},reg:{}};
+}
+let S=(()=>{try{return JSON.parse(localStorage.getItem('vp1'))||seed()}catch(e){return seed()}})();
+S.wk=S.wk||{};S.closed=S.closed||{};
+let ST={page:'time',week:monday(new Date()),day:iso(new Date()),sel:null,dep:'',q:'',draft:null};
+function save(){try{localStorage.setItem('vp1',JSON.stringify(S));return true}catch(e){toast('Kunne ikke gemme: '+e.message);return false}}
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',2500)}
+const emp=id=>S.emps.find(e=>e.id===id);
+const absOn=(id,d)=>S.abs.find(a=>a.emp===id&&a.status==='Godkendt'&&a.from<=d&&d<=a.to);
+function conflicts(sh){return S.shifts.filter(o=>o.id!==sh.id&&sh.emp&&o.emp===sh.emp&&o.date===sh.date&&mins(o.s)<mins(sh.e)&&mins(sh.s)<mins(o.e)).length>0}
+
+
+const I={information:'<circle cx="12" cy="12" r="8"/><path d="M12 11v5M12 8v.5"/>',employees:'<circle cx="12" cy="9" r="3"/><circle cx="6" cy="10" r="2.3"/><circle cx="18" cy="10" r="2.3"/><path d="M6.5 18c0-3 11-3 11 0"/>',rota:'<rect x="5" y="5" width="14" height="14"/><path d="M5 9h14M8 13h8M8 16h8"/>',timesheet:'<rect x="6" y="4" width="12" height="16" rx="1"/><path d="M9 8h6M9 12h6M9 16h3"/>',swap:'<path d="M4 9h15l-3-3M20 15H5l3 3"/>',absence:'<circle cx="9" cy="9" r="3"/><path d="M4 19c0-5 10-5 10 0"/><path d="M16 5l3 1M17 9h3" />',financials:'<rect x="5" y="9" width="4" height="10"/><rect x="11" y="5" width="4" height="14"/><path d="M17 12h3v7h-3"/>',configuration:'<circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7.5" stroke-dasharray="3 2"/>',help:'<circle cx="12" cy="12" r="8"/><path d="M10 10a2 2 0 114 0c0 1.5-2 1.5-2 3M12 16.5v.5"/>'};
+const PAGES=[['info','Information','information'],['emps','Employees','employees'],['plan','Rota','rota'],['time','Timesheet','timesheet'],['swap','Shift Exchange','swap'],['abs','Absence','absence'],['fin','Financials','financials'],['cfg','Configuration','configuration']];
+const SUB={time:['Hours Worked','Hours Worked (week)','Unitec File','Tips','Check In/Out','Timesheet Sign-Off','Payroll Export','Approve Differences','Invoice Export','Reporting Forms','Absence Export','Working Now','Salary Details','Monthly Overview','Shifts & Breaks','Add Registration'],plan:['Rota'],emps:['Employee list'],abs:['Absence requests'],info:['News & overview'],swap:['Requests'],fin:['Revenue & wages'],cfg:['Departments & settings']};
+function nav(){
+ $('#tn').innerHTML=PAGES.map(([k,l,i])=>`<a class="${ST.page===k?'on':''}" onclick="go('${k}')"><svg viewBox="0 0 24 24">${I[i]}</svg>${l}</a>`).join('')+`<a style="margin-left:60px" onclick="toast('Help is not part of this demo')"><svg viewBox="0 0 24 24">${I.help}</svg>Help</a>`;
+ $('#sub').innerHTML=(SUB[ST.page]||[]).map((t,i)=>`<li class="${i===0?'on':''}" onclick="${i?`toast('${t.replace(/'/g,'')}: not built in this demo')`:''}">${t}</li>`).join('')}
+function go(p){ST.page=p;render()}
+function render(){nav();$('#hdr').innerHTML='';const f={plan,emps,time,abs,info,swap,fin,cfg}[ST.page];
+ if(f)f();else $('#view').innerHTML='<p class="stub">This module is not built in this demo.</p>'}
+/* ---------- PLANNER ---------- */
+function plan(){
+ const days=[...Array(7)].map((_,i)=>addD(ST.week,i)),today=iso(new Date());
+ const pub=!!S.pub[ST.week];
+ $('#hdr').innerHTML=`<button class="btn" onclick="wk(-7)">‹</button><button class="btn" onclick="ST.week=monday(new Date());render()">I dag</button><button class="btn" onclick="wk(7)">›</button>
+ <input type="date" value="${ST.week}" onchange="ST.week=monday(parse(this.value));render()">
+ <b>Uge ${isoWeek(parse(ST.week))}</b>
+ <select onchange="ST.dep=this.value;render()"><option value="">Alle afdelinger</option>${Object.keys(DEPS).map(d=>`<option ${ST.dep===d?'selected':''}>${d}</option>`).join('')}</select>
+ <span class="pill ${pub?'pub':'pen'}">${pub?'Publiceret':'Kladde'}</span><span class="sp"></span>
+ <button class="btn" onclick="editShift(null,null,'${ST.sel||ST.week}')">+ Ny vagt</button>
+ <button class="btn p" onclick="publish()">${pub?'Træk tilbage':'Publicér'}</button>`;
+ let h=`<div class="grid"><div class="gh">Medarbejder</div>`+days.map((d,i)=>`<div class="gh ${d===today?'today':''} ${d===ST.sel?'sel':''}" onclick="ST.sel='${d}';render()">${DN[i]} <small>${parse(d).getDate()}/${parse(d).getMonth()+1}</small></div>`).join('')+`<div class="gh" style="text-align:right">Timer</div>`;
+ const rowsFor=dep=>S.emps.filter(e=>e.active&&e.dep===dep);
+ const deps=Object.keys(DEPS).filter(d=>!ST.dep||d===ST.dep);
+ const wkShifts=S.shifts.filter(s=>s.date>=ST.week&&s.date<=days[6]);
+ deps.forEach(dep=>{
+  h+=`<div class="dep">${dep}</div>`;
+  rowsFor(dep).forEach(e=>{
+   const tot=wkShifts.filter(s=>s.emp===e.id).reduce((a,s)=>a+dur(s),0);
+   h+=`<div class="nm">${e.name}<small>Kontrakt ${e.contract} t/uge</small></div>`+days.map(d=>cell(e.id,d)).join('')+
+   `<div class="tot ${tot>e.contract+0.01?'warn':''}" title="Kontrakt ${e.contract} t">${fmt(tot)}</div>`;
+  });
+ });
+ const open=wkShifts.filter(s=>!s.emp&&(!ST.dep||s.dep===ST.dep));
+ h+=`<div class="dep">Ubemandede vagter</div><div class="nm">Åbne vagter</div>`+days.map(d=>cell(null,d)).join('')+`<div class="tot">${fmt(open.reduce((a,s)=>a+dur(s),0))}</div>`;
+ h+=`<div class="foot" style="grid-column:1">Timer pr. dag</div>`+days.map(d=>`<div class="foot">${fmt(wkShifts.filter(s=>s.date===d&&(!ST.dep||s.dep===ST.dep)).reduce((a,s)=>a+dur(s),0))} t</div>`).join('')+`<div class="foot"></div></div>`;
+ $('#view').innerHTML=h;
+ function cell(eid,d){
+  const ab=eid&&absOn(eid,d);
+  const items=wkShifts.filter(s=>s.emp===eid&&s.date===d&&(!ST.dep||s.dep===ST.dep));
+  return `<div class="cell ${ab?'abs':''}" data-e="${eid||''}" data-d="${d}" ondragover="event.preventDefault();this.classList.add('over')" ondragleave="this.classList.remove('over')" ondrop="drop(event,this)" onclick="if(event.target===this)editShift(null,${eid?`'${eid}'`:null},'${d}')">`+
+   (ab?`<span class="pill no">${ab.type}</span>`:'')+items.map(s=>`<div class="sh ${conflicts(s)?'conf':''} ${pub?'':'draft'}" style="background:${DEPS[s.dep]}" draggable="true" ondragstart="event.dataTransfer.setData('t','${s.id}')" onclick="editShift('${s.id}')" title="${conflicts(s)?'Overlap med anden vagt':'Pause '+s.brk+' min'}">${s.s}–${s.e}<small>${s.dep} · ${fmt(dur(s))} t${s.brk?' · pause '+s.brk:''}</small></div>`).join('')+`</div>`;
+ }
+}
+function isoWeek(d){const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const n=t.getUTCDay()||7;t.setUTCDate(t.getUTCDate()+4-n);return Math.ceil(((t-Date.UTC(t.getUTCFullYear(),0,1))/864e5+1)/7)}
+function wk(n){ST.week=addD(ST.week,n);render()}
+function drop(ev,el){ev.preventDefault();const s=S.shifts.find(x=>x.id===ev.dataTransfer.getData('t'));if(!s)return;
+ const e=el.dataset.e||null;s.emp=e;s.date=el.dataset.d;if(e)s.dep=emp(e).dep;save();render();if(conflicts(s))toast('Advarsel: vagten overlapper en anden vagt')}
+function publish(){const p=!!S.pub[ST.week];
+ if(!p){const bad=S.shifts.filter(s=>s.date>=ST.week&&s.date<=addD(ST.week,6)&&conflicts(s));
+  if(bad.length&&!confirm(bad.length+' vagter har overlap. Publicér alligevel?'))return;S.pub[ST.week]=true}else delete S.pub[ST.week];
+ if(save()){toast(p?'Planen er trukket tilbage':'Planen er publiceret (kun lokalt i denne browser)');render()}}
+function editShift(id,eid,date){
+ const s=id?S.shifts.find(x=>x.id===id):{emp:eid||null,date,s:'08:00',e:'16:00',brk:S.cfg.brk,dep:eid?emp(eid).dep:'Butik'};
+ $('#modal').innerHTML=`<div class="mb" onclick="if(event.target===this)closeM()"><div class="md"><h3>${id?'Rediger vagt':'Ny vagt'}</h3><div class="bd">
+ <label>Medarbejder</label><select id="f_e"><option value="">— Ubemandet —</option>${S.emps.filter(e=>e.active).map(e=>`<option value="${e.id}" ${s.emp===e.id?'selected':''}>${e.name}</option>`).join('')}</select>
+ <label>Afdeling</label><select id="f_d">${Object.keys(DEPS).map(d=>`<option ${s.dep===d?'selected':''}>${d}</option>`).join('')}</select>
+ <label>Dato</label><input type="date" id="f_date" value="${s.date}">
+ <label>Fra</label><input type="time" id="f_s" value="${s.s}"><label>Til</label><input type="time" id="f_t" value="${s.e}">
+ <label>Pause (min)</label><input type="number" id="f_b" min="0" value="${s.brk}"><div class="err" id="f_err"></div></div>
+ <div class="ft"><button class="btn p" onclick="saveShift('${id||''}')">Gem</button>${id?`<button class="btn" onclick="dupShift('${id}')">Dupliker</button><button class="btn d" onclick="delShift('${id}')">Slet</button>`:''}<span class="sp"></span><button class="btn" onclick="closeM()">Annuller</button></div></div></div>`}
+function closeM(){$('#modal').innerHTML=''}
+function saveShift(id){
+ const v={emp:$('#f_e').value||null,dep:$('#f_d').value,date:$('#f_date').value,s:$('#f_s').value,e:$('#f_t').value,brk:+$('#f_b').value||0};
+ let err='';if(!v.date||!v.s||!v.e)err='Udfyld dato og tider.';else if(mins(v.e)<=mins(v.s))err='Sluttid skal være efter starttid.';else if(v.brk>=mins(v.e)-mins(v.s))err='Pausen er for lang.';else if((mins(v.e)-mins(v.s))/60>S.cfg.maxDay)err='Shift is longer than max hours per day ('+S.cfg.maxDay+').';
+ if(err){$('#f_err').textContent=err;return}
+ let s;if(id){s=S.shifts.find(x=>x.id===id);Object.assign(s,v)}else{s={id:uid(),...v};S.shifts.push(s)}
+ const c=conflicts(s),ab=v.emp&&absOn(v.emp,v.date);
+ if(save()){closeM();render();toast(c?'Gemt – advarsel: overlap':ab?'Gemt – medarbejderen har godkendt fravær':'Vagt gemt')}}
+function dupShift(id){const s=S.shifts.find(x=>x.id===id);S.shifts.push({...s,id:uid(),date:addD(s.date,1)});save();closeM();render();toast('Vagt duplikeret til næste dag')}
+function delShift(id){if(!confirm('Slet vagten?'))return;S.shifts=S.shifts.filter(x=>x.id!==id);save();closeM();render()}
+
+
+/* ---------- DEMO DATA ---------- */
+function seed2(){
+ if(S.seed2)return;const t=iso(new Date()),w=monday(new Date()),T=m=>pad(Math.floor(m/60))+':'+pad(m%60);
+ const act=['Adm','Sales','Stock','Till'];
+ S.shifts.filter(s=>s.emp&&s.date>=w&&s.date<=t).forEach((s,i)=>{const o={s:s.s,e:s.e,act:act[i%4]};if(i%5===2)o.e=T(mins(s.e)-45);S.wk[s.emp+'|'+s.date]=o});
+ const free=S.emps.find(e=>!S.shifts.some(s=>s.emp===e.id&&s.date===t));if(free)S.wk[free.id+'|'+t]={s:'09:00',e:'16:45',act:'Adm'};
+ for(let i=0;i<7;i++){const d=addD(w,i);S.wk['rp|'+d]=12800+i*430;S.wk['rb|'+d]=12500;if(d<=t)S.wk['ra|'+d]=12100+((i*7919)%2300)}
+ S.wk['note|'+t]='Delivery arrives at 10:00 – remember to count stock before opening.';
+ const u=addD(w,7);S.abs.push({id:uid(),emp:'e3',from:u,to:addD(u,4),type:'Ferie',status:'Godkendt'},{id:uid(),emp:'e5',from:w,to:w,type:'Sygdom',status:'Godkendt'},{id:uid(),emp:'e6',from:addD(w,9),to:addD(w,9),type:'Orlov',status:'Afventer'});
+ const fut=S.shifts.filter(s=>s.emp&&s.date>=t);S.swaps=[];
+ fut.slice(0,3).forEach((s,i)=>{const o=S.emps.find(e=>e.id!==s.emp&&e.dep===emp(s.emp).dep);if(o)S.swaps.push({id:uid(),shift:s.id,to:o.id,status:i===2?'Approved':'Pending'})});
+ S.news=[{id:uid(),title:'New opening hours from November',text:'The store opens at 08:00 on weekdays from 1 November. Check your rota for changes.',date:addD(t,-1),by:'Sarah Smith'},{id:uid(),title:'Stock count on Friday',text:'We do a full stock count on Friday afternoon. Everyone in Lager and Butik helps out.',date:addD(t,-3),by:'Sarah Smith'},{id:uid(),title:'Welcome to the new rota',text:'Shift exchanges and absence requests are now handled directly in the system.',date:addD(t,-8),by:'Admin'}];
+ S.cfg={brk:30,maxDay:10,ot:37,rate:{Butik:165,Kasse:165,Lager:175}};S.seed2=1;save()}
+const when=s=>DN[(parse(s.date).getDay()+6)%7]+' '+parse(s.date).getDate()+'/'+(parse(s.date).getMonth()+1)+' '+s.s+'–'+s.e;
+/* ---------- INFORMATION ---------- */
+function info(){
+ const t=iso(new Date()),today=S.shifts.filter(s=>s.date===t&&s.emp),st=(l,v)=>`<div class="card"><h4>${l}</h4><b>${v}</b></div>`;
+ $('#view').innerHTML=`<div class="stats">${st('Working today',new Set(today.map(s=>s.emp)).size)}${st('Open shifts',S.shifts.filter(s=>!s.emp&&s.date>=t).length)}${st('Absence requests pending',S.abs.filter(a=>a.status==='Afventer').length)}${st('Shift exchanges pending',S.swaps.filter(x=>x.status==='Pending').length)}</div>
+ <h3 class="sec" style="margin-top:0">News</h3>${S.news.map(n=>`<div class="nw"><b>${n.title}</b><small>${n.date} · ${n.by}</small><p>${n.text}</p></div>`).join('')}
+ <div class="fm"><b>New post</b><input id="n_t" placeholder="Title"><textarea id="n_x" placeholder="Message"></textarea><div><button class="btn p" onclick="addNews()">Post</button></div></div>`}
+function addNews(){const ti=$('#n_t').value.trim(),x=$('#n_x').value.trim();if(!ti||!x){toast('Enter a title and a message');return}
+ S.news.unshift({id:uid(),title:ti,text:x,date:iso(new Date()),by:'Sarah Smith'});if(save())info()}
+/* ---------- SHIFT EXCHANGE ---------- */
+function swap(){
+ $('#hdr').innerHTML=`<div class="tb"><span class="sp"></span><button class="btn p" onclick="newSwap()">+ New request</button></div>`;
+ $('#view').innerHTML=S.swaps.length?`<table><tr><th>Shift</th><th>From</th><th>To</th><th>Status</th><th></th></tr>`+S.swaps.map(x=>{const s=S.shifts.find(a=>a.id===x.shift);if(!s)return'';
+ const cur=x.status==='Approved'?emp(x.to):emp(s.emp);return`<tr><td>${when(s)}</td><td>${x.status==='Approved'?'(was '+(x.from?emp(x.from).name:'–')+')':emp(s.emp).name}</td><td>${emp(x.to).name}</td><td><span class="pill ${x.status==='Approved'?'pub':x.status==='Rejected'?'no':'pen'}">${x.status}</span></td><td>${x.status==='Pending'?`<button class="btn" onclick="setSwap('${x.id}',1)">Approve</button> <button class="btn d" onclick="setSwap('${x.id}',0)">Reject</button>`:''}</td></tr>`}).join('')+`</table>`:'<p>No shift exchange requests.</p>'}
+function setSwap(id,ok){const x=S.swaps.find(a=>a.id===id),s=S.shifts.find(a=>a.id===x.shift);
+ if(ok){x.from=s.emp;s.emp=x.to;x.status='Approved'}else x.status='Rejected';save();swap();if(ok&&conflicts(s))toast('Approved – warning: the shift now overlaps another shift')}
+function newSwap(){const t=iso(new Date());
+ $('#modal').innerHTML=`<div class="mb"><div class="md"><h3>New shift exchange</h3><div class="bd"><label>Shift</label><select id="x_s">${S.shifts.filter(s=>s.emp&&s.date>=t).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,40).map(s=>`<option value="${s.id}">${when(s)} – ${emp(s.emp).name}</option>`).join('')}</select>
+ <label>Give to</label><select id="x_e">${S.emps.filter(e=>e.active).map(e=>`<option value="${e.id}">${e.name}</option>`).join('')}</select><div class="err" id="f_err"></div></div><div class="ft"><button class="btn p" onclick="saveSwap()">Send</button><button class="btn" onclick="closeM()">Cancel</button></div></div></div>`}
+function saveSwap(){const sid=$('#x_s').value,to=$('#x_e').value,s=S.shifts.find(a=>a.id===sid);
+ if(!s||s.emp===to){$('#f_err').textContent='Choose a different employee.';return}S.swaps.push({id:uid(),shift:sid,to,status:'Pending'});save();closeM();swap()}
+/* ---------- FINANCIALS ---------- */
+function fin(){
+ $('#hdr').innerHTML=`<div class="tb"><button class="rb" onclick="wk(-7)">‹</button><button class="rb" onclick="wk(7)">›</button><b style="font-size:15px">Week ${isoWeek(parse(ST.week))}</b><span class="sp"></span><span style="color:var(--mut)">Demo data · wage cost = hours × hourly rate (Configuration)</span></div>`;
+ let T={p:0,w:0,c:0,rp:0,rb:0,ra:0};const f=n=>n.toLocaleString('da-DK',{maximumFractionDigits:0});
+ const rows=[...Array(7)].map((_,i)=>{const d=addD(ST.week,i);let p=0,w=0,c=0;
+  S.shifts.filter(s=>s.date===d&&s.emp).forEach(s=>p+=dur(s));
+  S.emps.forEach(e=>{const r=S.wk[e.id+'|'+d];if(r){const x=hrs(r);w+=x;c+=x*(S.cfg.rate[e.dep]||0)}});
+  const rp=S.wk['rp|'+d]||0,rb=S.wk['rb|'+d]||0,ra=S.wk['ra|'+d]||0;T.p+=p;T.w+=w;T.c+=c;T.rp+=rp;T.rb+=rb;T.ra+=ra;
+  return`<tr><td>${DAYS[i]} ${parse(d).getDate()}/${parse(d).getMonth()+1}</td><td class="r">${fmt(p)}</td><td class="r">${fmt(w)}</td><td class="r">${f(c)}</td><td class="r">${f(rp)}</td><td class="r">${f(rb)}</td><td class="r">${ra?f(ra):'–'}</td><td class="r">${ra&&c?(c/ra*100).toFixed(1)+' %':'–'}</td></tr>`}).join('');
+ $('#view').innerHTML=`<div class="xs"><table class="fn"><tr><th>Day</th><th class="r">Planned h</th><th class="r">Worked h</th><th class="r">Wage cost (kr)</th><th class="r">Revenue plan</th><th class="r">Revenue budget</th><th class="r">Revenue actual</th><th class="r">Wage %</th></tr>${rows}
+ <tr style="font-weight:700;background:#f7f8fa"><td>Total</td><td class="r">${fmt(T.p)}</td><td class="r">${fmt(T.w)}</td><td class="r">${f(T.c)}</td><td class="r">${f(T.rp)}</td><td class="r">${f(T.rb)}</td><td class="r">${f(T.ra)}</td><td class="r">${T.ra&&T.c?(T.c/T.ra*100).toFixed(1)+' %':'–'}</td></tr></table></div>
+ <p style="color:var(--mut)">Revenue figures are entered on the Timesheet page (Show revenue for work day).</p>`}
+/* ---------- CONFIGURATION ---------- */
+function cfg(){
+ const C=S.cfg,fld=(l,id,v)=>`<label>${l}</label><input type="number" id="${id}" value="${v}" min="0" style="width:110px">`;
+ $('#view').innerHTML=`<h3 class="sec" style="margin-top:0">Departments</h3><table><tr><th>Department</th><th>Employees</th><th>Hourly rate (kr)</th></tr>${Object.keys(DEPS).map(d=>`<tr><td><span class="sw" style="background:${DEPS[d]}"></span>${d}</td><td>${S.emps.filter(e=>e.active&&e.dep===d).length}</td><td><input type="number" min="0" id="r_${d}" value="${C.rate[d]}" style="width:100px"></td></tr>`).join('')}</table>
+ <h3 class="sec">Settings</h3><div class="fm" style="display:grid;grid-template-columns:230px 1fr;align-items:center;gap:10px">${fld('Default break (minutes)','c_b',C.brk)}${fld('Max hours per shift','c_m',C.maxDay)}${fld('Weekly overtime warning (hours)','c_o',C.ot)}</div>
+ <div style="margin-top:18px"><button class="pill-b f" style="margin-left:0" onclick="saveCfg()">Save</button></div>`}
+function saveCfg(){const b=+$('#c_b').value,m=+$('#c_m').value,o=+$('#c_o').value;if(!(b>=0)||!(m>0&&m<=24)||!(o>0)){toast('Check the values (max shift 1–24 hours)');return}
+ Object.keys(DEPS).forEach(d=>{S.cfg.rate[d]=+$('#r_'+d).value||0});Object.assign(S.cfg,{brk:b,maxDay:m,ot:o});if(save())toast('Settings saved')}
+/* ---------- EMPLOYEES ---------- */
+function emps(){
+ $('#hdr').innerHTML=`<input placeholder="Søg…" value="${ST.q}" oninput="ST.q=this.value;empT()" id="q"><span class="sp"></span><button class="btn p" onclick="editEmp()">+ Ny medarbejder</button>`;
+ $('#view').innerHTML=`<div id="et"></div>`;empT();
+}
+function empT(){const q=ST.q.toLowerCase();const r=S.emps.filter(e=>(e.name+e.email+e.dep).toLowerCase().includes(q));
+ $('#et').innerHTML=r.length?`<table><tr><th>Navn</th><th>Afdeling</th><th>E-mail</th><th>Kontrakt (t/uge)</th><th>Status</th><th></th></tr>`+r.map(e=>`<tr><td>${e.name}</td><td>${e.dep}</td><td>${e.email}</td><td>${e.contract}</td><td><span class="pill ${e.active?'pub':''}">${e.active?'Aktiv':'Inaktiv'}</span></td><td><button class="btn" onclick="editEmp('${e.id}')">Rediger</button></td></tr>`).join('')+`</table>`:'<p>Ingen medarbejdere fundet.</p>'}
+function editEmp(id){const e=id?emp(id):{name:'',dep:'Butik',email:'',contract:37,active:true};
+ $('#modal').innerHTML=`<div class="mb"><div class="md"><h3>${id?'Rediger':'Ny'} medarbejder</h3><div class="bd"><label>Navn</label><input id="n" value="${e.name}"><label>E-mail</label><input id="m" value="${e.email}">
+ <label>Afdeling</label><select id="d">${Object.keys(DEPS).map(d=>`<option ${e.dep===d?'selected':''}>${d}</option>`).join('')}</select><label>Kontrakt t/uge</label><input type="number" id="c" value="${e.contract}">
+ <label>Aktiv</label><input type="checkbox" id="a" ${e.active?'checked':''}><div class="err" id="f_err"></div></div><div class="ft"><button class="btn p" onclick="saveEmp('${id||''}')">Gem</button><button class="btn" onclick="closeM()">Annuller</button></div></div></div>`}
+function saveEmp(id){const v={name:$('#n').value.trim(),email:$('#m').value.trim(),dep:$('#d').value,contract:+$('#c').value,active:$('#a').checked};
+ if(!v.name||!/^\S+@\S+\.\S+$/.test(v.email)||!(v.contract>=0)){$('#f_err').textContent='Angiv navn, gyldig e-mail og kontrakttimer.';return}
+ if(id)Object.assign(emp(id),v);else S.emps.push({id:uid(),...v});save();closeM();render()}
+
+/* ---------- TIMESHEET ---------- */
+const DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const TINT={Butik:'#d3e8f5',Kasse:'#fdf3d8',Lager:'#e6e0f3'};
+const hrs=w=>Math.max(0,(mins(w.e)-mins(w.s))/60);
+function tsd(n){ST.day=addD(ST.day,n);render()}
+function time(){
+ const d=ST.day,mon=monday(parse(d)),closed=S.closed[d];ST.draft=ST.draft||JSON.parse(JSON.stringify(S.wk));const D=ST.draft;
+ const ck=(k,l)=>`<label class="ck"><input type="checkbox" ${ST[k]?'checked':''} onchange="ST.${k}=this.checked;render()">${l}</label>`;
+ $('#hdr').innerHTML=`<div class="tb"><button class="rb" onclick="tsd(-1)">‹</button><div class="dp"><input type="date" value="${d}" onchange="ST.day=this.value||ST.day;render()"></div><button class="rb" onclick="tsd(1)">›</button>${ck('only','Only employees with shifts')}${ck('subdep','Show subdepartments')}${ck('rev','Show revenue for work day')}<span class="sp"></span><button class="rb pr" title="Print" onclick="window.print()">⎙</button></div>`;
+ let rows='',tp=0,tw=0;
+ const list=S.emps.filter(e=>e.active&&(!ST.only||S.shifts.some(s=>s.emp===e.id&&s.date===d)));
+ const groups=ST.subdep?Object.keys(DEPS):[null];
+ groups.forEach(g=>{if(g)rows+=`<tr class="gr"><td colspan="7">${g}</td></tr>`;
+  list.filter(e=>!g||e.dep===g).forEach(e=>{
+   const ps=S.shifts.filter(s=>s.emp===e.id&&s.date===d).sort((a,b)=>a.s.localeCompare(b.s)),ph=ps.reduce((a,s)=>a+dur(s),0),w=D[e.id+'|'+d],wh=w?hrs(w):0;tp+=ph;tw+=wh;
+   const cls=w?(!ps.length?'r1':Math.abs(wh-ph)>.01?'y1':'g1'):'',tint=ps.length?`background:${TINT[ps[0].dep]}`:'';
+   rows+=`<tr><td>${e.name}</td><td class="pc" style="${tint}">${ps.map(s=>s.s.replace(/^0/,'')+' - '+s.e).join(', ')}${ps.length?`<i>${ps[0].dep.slice(0,3)}</i>`:''}</td><td class="r">${ph.toFixed(2)}</td>
+   <td class="w" style="${w&&ps.length?tint:''}" onclick="editWork('${e.id}')">${w?w.s+' - '+w.e:''}</td><td class="w" style="width:32px;text-align:center" onclick="editWork('${e.id}')"></td><td class="w" onclick="editWork('${e.id}')" style="color:#444">${w?w.act||'':''}</td><td class="wh ${cls}" onclick="editWork('${e.id}')">${wh.toFixed(2)}</td></tr>`})});
+ const card=(t,k,v)=>`<div class="card"><h4>${t}</h4><input type="number" step="0.01" value="${v}" ${closed?'disabled':''} onchange="ST.draft['${k}|${d}']=+this.value||0"></div>`;
+ $('#view').innerHTML=`<div class="tb2" style="padding-top:0"><a class="lnk" onclick="copyRota()">⧉&nbsp; Copy Rota</a><span class="sp"></span><button class="pill-b f" onclick="tsSave(false)">Save</button><button class="pill-b" onclick="${closed?'reopen()':'tsSave(true)'}">${closed?'Reopen Day':'Save &amp; Close Day'}</button></div>
+ <div class="tsw"><div><div class="days">${DAYS.map((n,i)=>{const x=addD(mon,i);return`<div class="dt ${x===d?'on':''} ${S.closed[x]?'cl':''}" onclick="ST.day='${x}';render()">${n}<br>${S.closed[x]?'CLOSED':'OPEN'}</div>`}).join('')}</div>
+ <div class="xs"><table class="ts"><caption>Week ${isoWeek(parse(d))}</caption><colgroup><col style="width:17%"><col style="width:19%"><col style="width:8%"><col style="width:15%"><col style="width:3%"><col style="width:15%"><col></colgroup>
+ <tr><th colspan="3" style="height:44px">Planned shift</th><th colspan="4">Shift worked</th></tr><tr><th>Name</th><th></th><th class="r">Hours</th><th colspan="3" class="r">Activity / Comment</th><th class="r">Hours</th></tr>
+ ${rows||'<tr><td colspan="7">No employees to show.</td></tr>'}<tr class="tot"><td></td><td></td><td class="r">${tp.toFixed(2)}</td><td colspan="3"></td><td class="r">${tw.toFixed(2)}</td></tr></table></div></div>
+ <div class="side"><div class="card"><h4>Daily Note</h4><textarea ${closed?'disabled':''} onchange="ST.draft['note|${d}']=this.value">${D['note|'+d]||''}</textarea></div>
+ ${ST.rev?card('Revenue (Plan)','rp',D['rp|'+d]||0)+card('Revenue (Budget)','rb',D['rb|'+d]||0)+card('Revenue (Actual)','ra',D['ra|'+d]||0):''}</div></div>`}
+function tsSave(close){S.wk=JSON.parse(JSON.stringify(ST.draft));if(close)S.closed[ST.day]=true;if(save()){toast(close?'Saved and day closed':'Saved');render()}}
+function reopen(){delete S.closed[ST.day];if(save())render()}
+function editWork(id){
+ const d=ST.day;if(S.closed[d]){toast('Day is closed – reopen it to edit');return}
+ const ps=S.shifts.filter(s=>s.emp===id&&s.date===d),w=ST.draft[id+'|'+d]||{s:ps[0]?.s||'09:00',e:ps[0]?.e||'17:00',act:''};
+ $('#modal').innerHTML=`<div class="mb"><div class="md"><h3>${emp(id).name} – ${d}</h3><div class="bd"><label>From</label><input type="time" id="w_s" value="${w.s}"><label>To</label><input type="time" id="w_e" value="${w.e}"><label>Activity</label><input id="w_a" value="${w.act||''}"><div class="err" id="f_err"></div></div>
+ <div class="ft"><button class="btn p" onclick="saveWork('${id}')">OK</button>${ST.draft[id+'|'+d]?`<button class="btn d" onclick="delete ST.draft['${id}|${d}'];closeM();render()">Remove</button>`:''}<span class="sp"></span><button class="btn" onclick="closeM()">Cancel</button></div></div></div>`}
+function saveWork(id){const s=$('#w_s').value,e=$('#w_e').value;if(!s||!e||mins(e)<=mins(s)){$('#f_err').textContent='End time must be after start time.';return}
+ ST.draft[id+'|'+ST.day]={s,e,act:$('#w_a').value.trim()};closeM();render()}
+function copyRota(){const t=prompt('Copy planned shifts from '+ST.day+' to date (YYYY-MM-DD):');if(!t)return;if(!/^\d{4}-\d\d-\d\d$/.test(t)||t===ST.day){toast('Enter a different valid date');return}
+ const src=S.shifts.filter(s=>s.date===ST.day);src.forEach(s=>S.shifts.push({...s,id:uid(),date:t}));save();toast(src.length+' shifts copied to '+t)}
+
+/* ---------- ABSENCE ---------- */
+function abs(){
+ $('#hdr').innerHTML=`<span class="sp"></span><button class="btn p" onclick="editAbs()">+ Fraværsanmodning</button>`;
+ $('#view').innerHTML=S.abs.length?`<table><tr><th>Medarbejder</th><th>Type</th><th>Fra</th><th>Til</th><th>Status</th><th></th></tr>`+S.abs.map(a=>`<tr><td>${emp(a.emp)?.name||'?'}</td><td>${a.type}</td><td>${a.from}</td><td>${a.to}</td><td><span class="pill ${a.status==='Godkendt'?'pub':a.status==='Afvist'?'no':'pen'}">${a.status}</span></td><td>${a.status==='Afventer'?`<button class="btn" onclick="setAbs('${a.id}','Godkendt')">Godkend</button> <button class="btn d" onclick="setAbs('${a.id}','Afvist')">Afvis</button>`:''}</td></tr>`).join('')+`</table>`:'<p>Ingen fraværsanmodninger.</p>'}
+function setAbs(id,st){S.abs.find(a=>a.id===id).status=st;save();abs()}
+function editAbs(){$('#modal').innerHTML=`<div class="mb"><div class="md"><h3>Fraværsanmodning</h3><div class="bd"><label>Medarbejder</label><select id="e">${S.emps.filter(e=>e.active).map(e=>`<option value="${e.id}">${e.name}</option>`).join('')}</select>
+ <label>Type</label><select id="t"><option>Ferie</option><option>Sygdom</option><option>Orlov</option></select><label>Fra</label><input type="date" id="f"><label>Til</label><input type="date" id="to"><div class="err" id="f_err"></div></div>
+ <div class="ft"><button class="btn p" onclick="saveAbs()">Send</button><button class="btn" onclick="closeM()">Annuller</button></div></div></div>`}
+function saveAbs(){const f=$('#f').value,t=$('#to').value;if(!f||!t||t<f){$('#f_err').textContent='Angiv en gyldig periode.';return}
+ S.abs.push({id:uid(),emp:$('#e').value,type:$('#t').value,from:f,to:t,status:'Afventer'});save();closeM();abs()}
+
+/* ---------- REPORTS ---------- */
+function rep(){
+ $('#hdr').innerHTML=`<button class="btn" onclick="wk(-7)">‹</button><button class="btn" onclick="wk(7)">›</button><b>Uge ${isoWeek(parse(ST.week))}</b>`;
+ const sh=S.shifts.filter(s=>s.date>=ST.week&&s.date<=addD(ST.week,6));
+ $('#view').innerHTML=`<table><tr><th>Medarbejder</th><th>Afdeling</th><th>Planlagt (t)</th><th>Kontrakt (t)</th><th>Differens</th></tr>`+S.emps.filter(e=>e.active).map(e=>{const t=sh.filter(s=>s.emp===e.id).reduce((a,s)=>a+dur(s),0);const d=t-e.contract;
+ return`<tr><td>${e.name}</td><td>${e.dep}</td><td>${fmt(t)}</td><td>${e.contract}</td><td style="color:${d>0?'var(--bad)':'inherit'}">${d>0?'+':''}${fmt(d)}</td></tr>`}).join('')+`</table>`}
+seed2();render();
+</script></body></html>
